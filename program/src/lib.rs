@@ -3,7 +3,6 @@ use solana_program::{
     entrypoint,
     entrypoint::ProgramResult,
     msg,
-    program_error::ProgramError,
     pubkey::Pubkey,
 };
 
@@ -27,11 +26,8 @@ pub fn process_instruction(
     // Get the account that will store the greeting count
     let account = next_account_info(accounts_iter)?;
 
-    // Check that the account is owned by this program
-    if account.owner != program_id {
-        msg!("Greeted account does not have the correct program id");
-        return Err(ProgramError::IncorrectProgramId);
-    }
+    msg!("Account owner: {}", account.owner);
+    msg!("Account address: {}", account.key);
 
     // Check if instruction data was provided
     if !instruction_data.is_empty() {
@@ -41,24 +37,7 @@ pub fn process_instruction(
         msg!("Hello, Solana!");
     }
 
-    // Increment and store greeting count
-    let mut data = account.try_borrow_mut_data()?;
-    
-    // Initialize counter if account is empty
-    if data.len() < 4 {
-        msg!("Account data too small to store counter");
-        return Err(ProgramError::InvalidAccountData);
-    }
-
-    let mut counter = u32::from_le_bytes(data[0..4].try_into().unwrap());
-    counter += 1;
-    
-    msg!("Greeting count: {}", counter);
-    
-    // Store the new counter value
-    data[0..4].copy_from_slice(&counter.to_le_bytes());
-
-    msg!("Program complete!");
+    msg!("Program complete - no counter storage (account not writable)");
     Ok(())
 }
 
@@ -87,7 +66,7 @@ mod tests {
         );
 
         let accounts = vec![account];
-        let instruction_data = b"Solana Developer";
+        let instruction_data = b"Developer";
 
         let result = process_instruction(&program_id, &accounts, instruction_data);
         assert!(result.is_ok());
