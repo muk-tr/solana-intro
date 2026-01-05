@@ -1,0 +1,37 @@
+# --- Rust/Solana Program ---
+# The /target folder contains the compiled SBF programs and build artifacts
+target/
+
+# --- Secret Keys (EXTREMELY IMPORTANT) ---
+# Never commit your private keys to version control.
+# Solana CLI defaults to .json files for keypairs.
+*.json
+!package.json
+!tsconfig.json
+!composer.json
+
+# --- Environment & Logs ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.log
+
+# --- Javascript/Node.js (for Anchor or frontend) ---
+node_modules/
+dist/
+build/
+.yarn/
+.pnp.*
+
+# --- Operating System ---
+.DS_Store
+Thumbs.db
+.direnv/
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
